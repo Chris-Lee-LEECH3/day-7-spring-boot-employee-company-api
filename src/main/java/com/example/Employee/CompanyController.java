@@ -33,7 +33,21 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getAllCompanies() {
+    public List<Company> getAllCompanies(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size
+    ) {
+        if (page != null && size != null) {
+            for (int index = 1; index <= companies.size(); index++) {
+                int currentPage = index / size + 1;
+                if (currentPage == page) {
+                    int start = (page - 1) * size;
+                    int end = Math.min(start + size, companies.size());
+                    return companies.subList(start, end);
+                }
+            }
+        }
+
         return companies;
     }
 
@@ -56,6 +70,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompanyById(@PathVariable Integer id) {
         Company existingCompany = this.getCompanyById(id);
         companies.remove(existingCompany);
