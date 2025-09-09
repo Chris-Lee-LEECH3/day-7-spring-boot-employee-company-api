@@ -12,6 +12,16 @@ public class EmployeeController {
     private List<Employee> employees = new ArrayList<>();
     private int id = 0;
 
+    @GetMapping("/{id}")
+    public Employee findEmployeeById(@PathVariable Integer id) {
+        for (Employee employee : employees) {
+            if (employee.id().equals(id)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
     @GetMapping
     public void getAllEmployees() {
 
