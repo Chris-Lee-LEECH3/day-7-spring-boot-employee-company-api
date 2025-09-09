@@ -43,18 +43,15 @@ public class EmployeeController {
             }
         }
 
-        if (gender == null) {
-            return employees;
+        if (gender != null) {
+            return findEmployeesByGender(gender);
         }
 
-        List<Employee> result = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (employee.gender().equalsIgnoreCase(gender)) {
-                result.add(employee);
-            }
-        }
-        return result;
-//        return employees.stream().filter(employee -> employee.gender().equalsIgnoreCase(gender)).collect(Collectors.toList());
+        return employees;
+    }
+
+    private List<Employee> findEmployeesByGender(String gender) {
+        return employees.stream().filter(employee -> employee.gender().equalsIgnoreCase(gender)).collect(Collectors.toList());
     }
 
     @PostMapping
