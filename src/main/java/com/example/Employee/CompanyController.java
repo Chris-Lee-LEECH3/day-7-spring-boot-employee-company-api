@@ -58,7 +58,7 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public Company updateCompanyById(@PathVariable Integer id, @RequestBody Company company) {
-        Company existingCompany = companies.stream().filter(comp -> comp.id().equals(id)).findFirst().orElse(null);
+        Company existingCompany = this.getCompanyById(id);
         if (existingCompany == null) {
             return null;
         }
