@@ -38,13 +38,10 @@ public class CompanyController {
             @RequestParam(required = false) Integer size
     ) {
         if (page != null && size != null) {
-            for (int index = 1; index <= companies.size(); index++) {
-                int currentPage = index / size + 1;
-                if (currentPage == page) {
-                    int start = (page - 1) * size;
-                    int end = Math.min(start + size, companies.size());
-                    return companies.subList(start, end);
-                }
+            int start = (page - 1) * size;
+            int end = Math.min(start + size, companies.size());
+            if (start >= 0 && start < companies.size()) {
+                return companies.subList(start, end);
             }
         }
 

@@ -36,13 +36,10 @@ public class EmployeeController {
         @RequestParam(required = false) Integer size
     ) {
         if (page != null && size != null) {
-            for (int index = 1; index <= employees.size(); index++) {
-                int currentPage = index / size + 1;
-                if (currentPage == page) {
-                    int start = (page - 1) * size;
-                    int end = Math.min(start + size, employees.size());
-                    return employees.subList(start, end);
-                }
+            int start = (page - 1) * size;
+            int end = Math.min(start + size, employees.size());
+            if (start >= 0 && start < employees.size()) {
+                return employees.subList(start, end);
             }
         }
 
