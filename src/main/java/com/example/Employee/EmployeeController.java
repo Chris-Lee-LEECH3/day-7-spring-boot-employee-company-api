@@ -1,12 +1,10 @@
 package com.example.Employee;
 
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -30,6 +28,10 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getAllEmployees(@RequestParam(required = false) String gender) {
+        if (gender == null) {
+            return employees;
+        }
+
         List<Employee> result = new ArrayList<>();
         for (Employee employee : employees) {
             if (employee.gender().equalsIgnoreCase(gender)) {
