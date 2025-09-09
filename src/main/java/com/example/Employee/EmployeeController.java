@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -14,6 +16,7 @@ public class EmployeeController {
 
     public void clear() {
         employees.clear();
+        id = 0;
     }
 
     @GetMapping("/{id}")
@@ -27,7 +30,22 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees(@RequestParam(required = false) String gender) {
+    public List<Employee> getAllEmployees(
+        @RequestParam(required = false) String gender,
+        @RequestParam(required = false) Integer page,
+        @RequestParam(required = false) Integer size
+    ) {
+        if (page != null && size != null) {
+            for (int index = 1; index <= employees.size(); index++) {
+                int currentPage = index / size + 1;
+                if (currentPage == page) {
+                    int start = (page - 1) * size;
+                    int end = Math.min(start + size, employees.size());
+                    return employees.subList(start, end);
+                }
+            }
+        }
+
         if (gender == null) {
             return employees;
         }

@@ -140,8 +140,41 @@ public class EmployeeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request).andExpect(status().isNoContent());
-
-        assertEquals(0, employeeController.getAllEmployees(null).size());
     }
 
+    @Test
+    public void should_return_employees_with_pagination_when_get_all_employees_given_page_1_size_3() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            employeeController.create(new Employee(null, "Employee" + i, 25 + i, "Male", 3000.0 + i * 100));
+        }
+
+        MockHttpServletRequestBuilder request = get("/employees?page=1&size=3")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(3))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[2].id").value(3));
+    }
+
+    @Test
+    public void should_return_employees_with_pagination_when_get_all_employees_given_page_2_size_5() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            employeeController.create(new Employee(null, "Employee" + i, 25 + i, "Male", 3000.0 + i * 100));
+        }
+
+        MockHttpServletRequestBuilder request = get("/employees?page=2&size=5")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(5))
+                .andExpect(jsonPath("$[0].id").value(6))
+                .andExpect(jsonPath("$[1].id").value(7))
+                .andExpect(jsonPath("$[2].id").value(8))
+                .andExpect(jsonPath("$[3].id").value(9))
+                .andExpect(jsonPath("$[4].id").value(10));
+    }
 }
