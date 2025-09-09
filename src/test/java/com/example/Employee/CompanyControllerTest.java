@@ -100,4 +100,15 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.name").value("company ABC"));
     }
 
+    @Test
+    public void should_return_deleted_company_when_delete_company_by_id_given_existing_company_id() throws Exception {
+        Company company = new Company(null, "company 1");
+        companyController.createCompany(company);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete("/companies/1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isNoContent());
+    }
+
 }

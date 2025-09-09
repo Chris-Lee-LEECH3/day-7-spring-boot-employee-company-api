@@ -15,6 +15,10 @@ public class CompanyController {
 
     private List<Company> companies = new ArrayList<>();
 
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
     public void clear() {
         companies.clear();
         id = 0;
@@ -49,6 +53,12 @@ public class CompanyController {
         companies.remove(existingCompany);
         companies.add(updatedCompany);
         return  updatedCompany;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCompanyById(@PathVariable Integer id) {
+        Company existingCompany = this.getCompanyById(id);
+        companies.remove(existingCompany);
     }
 
 }
