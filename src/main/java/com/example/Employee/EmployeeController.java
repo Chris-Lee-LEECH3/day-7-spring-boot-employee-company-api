@@ -51,4 +51,16 @@ public class EmployeeController {
         return newEmployee;
     }
 
+    @PutMapping("/{id}")
+    public Employee update(@PathVariable Integer id, @RequestBody Employee employee) {
+        Employee existingEmployee = this.findEmployeeById(id);
+        if (existingEmployee != null) {
+            Employee updatedEmployee = new Employee(id, employee.name(), employee.age(), employee.gender(), employee.salary());
+            employees.remove(existingEmployee);
+            employees.add(updatedEmployee);
+            return updatedEmployee;
+        }
+        return null;
+    }
+
 }
