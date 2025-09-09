@@ -61,8 +61,8 @@ public class CompanyController {
         }
 
         Company updatedCompany = new Company(existingCompany.id(), company.name());
-        companies.remove(existingCompany);
-        companies.add(updatedCompany);
+        int index = companies.indexOf(existingCompany);
+        companies.set(index, updatedCompany);
         return  updatedCompany;
     }
 

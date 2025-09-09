@@ -67,9 +67,9 @@ public class EmployeeController {
     public Employee update(@PathVariable Integer id, @RequestBody Employee employee) {
         Employee existingEmployee = this.findEmployeeById(id);
         if (existingEmployee != null) {
+            int index = employees.indexOf(existingEmployee);
             Employee updatedEmployee = new Employee(id, employee.name(), employee.age(), employee.gender(), employee.salary());
-            employees.remove(existingEmployee);
-            employees.add(updatedEmployee);
+            employees.set(index, updatedEmployee);
             return updatedEmployee;
         }
         return null;
