@@ -1,9 +1,26 @@
 package com.example.Employee;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
+
+    private int id = 0;
+
+    private List<Company> companies = new ArrayList<>();
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Company createCompany(@RequestBody  Company company) {
+        Company addedCompany = new Company(++id, company.name());
+        companies.add(addedCompany);
+        return addedCompany;
+    }
+
+
 }
