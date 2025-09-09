@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -30,6 +31,11 @@ public class CompanyController {
     @GetMapping
     public List<Company> getAllCompanies() {
         return companies;
+    }
+
+    @GetMapping("/{id}")
+    public Company getCompanyById(@PathVariable Integer id) {
+        return companies.stream().filter(company -> company.id().equals(id)).findFirst().orElse(null);
     }
 
 }

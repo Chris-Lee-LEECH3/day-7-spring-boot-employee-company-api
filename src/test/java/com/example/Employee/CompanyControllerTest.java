@@ -63,5 +63,21 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.length()").value(2));
     }
 
+    @Test
+    public void should_return_company_when_get_company_by_id_given_existing_company_id() throws Exception {
+        Company company = new Company(null, "company 1");
+        Company company2 = new Company(null, "company 2");
+        companyController.createCompany(company);
+        companyController.createCompany(company2);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/companies/2")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(2))
+                .andExpect(jsonPath("$.name").value("company 2"));
+    }
+
 
 }
