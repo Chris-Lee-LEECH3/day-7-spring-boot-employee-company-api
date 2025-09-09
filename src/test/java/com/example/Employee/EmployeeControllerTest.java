@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -127,6 +129,19 @@ public class EmployeeControllerTest {
                 .andExpect(jsonPath("$.age").value(33))
                 .andExpect(jsonPath("$.gender").value("Male"))
                 .andExpect(jsonPath("$.salary").value(6000.0));
+    }
+
+    @Test
+    public void should_return_deleted_employee_when_delete_existing_employee() throws Exception {
+        Employee employee = new Employee(null, "John Smith", 32, "Male", 5000.0);
+        Employee expectEmployee = employeeController.create(employee);
+
+        MockHttpServletRequestBuilder request = delete("/employees/" + expectEmployee.id())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isNoContent());
+
+        assertEquals(0, employeeController.getAllEmployees(null).size());
     }
 
 }
