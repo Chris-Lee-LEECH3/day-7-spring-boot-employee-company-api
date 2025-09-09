@@ -79,5 +79,25 @@ public class CompanyControllerTest {
                 .andExpect(jsonPath("$.name").value("company 2"));
     }
 
+    @Test
+    public void should_return_updated_company_when_update_company_given_new_company_name_and_existing_company_id() throws Exception {
+        Company company = new Company(null, "company 1");
+        companyController.createCompany(company);
+
+        String requestBody = """
+                {
+                    "name": "company ABC"
+                }
+                """;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put("/companies/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("company ABC"));
+    }
 
 }
